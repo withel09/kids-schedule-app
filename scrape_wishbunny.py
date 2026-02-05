@@ -50,6 +50,18 @@ def scrape_category(driver, category):
             EC.presence_of_element_located((By.CSS_SELECTOR, "div[role='listitem']"))
         )
         
+        # --- Infinite Scroll Logic ---
+        last_height = driver.execute_script("return document.body.scrollHeight")
+        while True:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2) # Wait for content to load
+            new_height = driver.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                break # No more content loaded
+            last_height = new_height
+            logging.info("Scrolled down...")
+        # -----------------------------
+        
         items = driver.find_elements(By.CSS_SELECTOR, "div[role='listitem']")
         
         scraped_data = []
