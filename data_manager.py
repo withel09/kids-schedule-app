@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 
 # Configure logging
@@ -89,48 +89,73 @@ def process_data(scraped_data):
         if is_new:
             new_items_list.append(item)
 
-    # Identify "Opening Today" Items
-    today = datetime.now().date()
-    opening_today_list = []
-    
-    for item in scraped_data:
-        s_date, _ = parse_date_range(item['date'])
-        if s_date == today:
-            opening_today_list.append(item)
-
-    # Update History (Upsert Strategy)
-    # 1. Convert scraped data to DataFrame
+    # --- Save History & Excel (Keep this Logic) ---
     df_current_scan = pd.DataFrame(scraped_data)
-    
-    # 2. Combine with old history, but prioritize new scan for overlapping links
     if not df_history.empty:
-        # Filter out old rows that are present in the new scan (to be replaced)
         links_in_current = set(df_current_scan['link'])
         df_history_kept = df_history[~df_history['link'].isin(links_in_current)]
-        
-        # Combine kept old rows + new scan rows
         df_updated_history = pd.concat([df_history_kept, df_current_scan], ignore_index=True)
     else:
         df_updated_history = df_current_scan
 
-    # Save History
     df_updated_history.to_csv(HISTORY_FILE, index=False, encoding='utf-8-sig')
-    
-    if new_items_list:
-        logging.info(f"Detected {len(new_items_list)} new or updated items.")
-    else:
-        logging.info("No new or updated items found.")
-
-    # Save User-Friendly Excel
     try:
-        # Explicitly use openpyxl engine
         df_updated_history.to_excel(EXCEL_FILE, index=False, engine='openpyxl')
         logging.info(f"Saved excel to {EXCEL_FILE}")
     except Exception as e:
         logging.error(f"Failed to save Excel: {e}")
 
+    # --- Dashboard Categorization Logic ---
+    today = datetime.now().date()
+    
+    # Buckets
+    bucket_today = []
+    bucket_week = []   # Next 7 days
+    bucket_month = []  # Rest of this month
+    bucket_later = []  # Next month and beyond
+    
+    # Helper to check if item is effectively new/updated (for highlighting)
+    # We already marked 'status_note' above if it was new/updated.
+    
+    for item in scraped_data:
+        s_date, e_date = parse_date_range(item['date'])
+        
+        # If no valid date, put in 'later' or separate bucket? Let's put in 'later'
+        if not s_date:
+            bucket_later.append(item)
+            continue
+            
+        # 1. Today
+        if s_date == today:
+            bucket_today.append(item)
+        
+        # 2. This Week (Next 7 days, excluding today)
+        elif today < s_date <= today + timedelta(days=7):
+            bucket_week.append(item)
+            
+        # 3. This Month (Rest of current month)
+        elif s_date.year == today.year and s_date.month == today.month:
+            bucket_month.append(item)
+            
+        # 4. Later
+        else:
+            bucket_later.append(item)
+
+    # Sort buckets by date
+    def date_sorter(x):
+        d, _ = parse_date_range(x['date'])
+        return d if d else datetime.max.date()
+
+    bucket_today.sort(key=date_sorter)
+    bucket_week.sort(key=date_sorter)
+    bucket_month.sort(key=date_sorter)
+    bucket_later.sort(key=date_sorter)
+
     return {
-        'new_items': new_items_list,
-        'opening_today': opening_today_list,
-        'total_count': len(scraped_data)
+        'opening_today': bucket_today,
+        'opening_this_week': bucket_week,
+        'opening_this_month': bucket_month,
+        'upcoming_later': bucket_later,
+        'total_count': len(scraped_data),
+        'new_items_count': len(new_items_list) # Just for logging/headers
     }

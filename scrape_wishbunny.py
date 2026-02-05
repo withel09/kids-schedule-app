@@ -4,6 +4,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
@@ -50,16 +52,33 @@ def scrape_category(driver, category):
             EC.presence_of_element_located((By.CSS_SELECTOR, "div[role='listitem']"))
         )
         
-        # --- Infinite Scroll Logic ---
+        # --- Robust Infinite Scroll Logic (Key Press) ---
         last_height = driver.execute_script("return document.body.scrollHeight")
+        retries = 0
+        
+        # Locate body for key presses
+        body_elem = driver.find_element(By.TAG_NAME, "body")
+        
         while True:
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2) # Wait for content to load
+            # Press END key to scroll to bottom
+            body_elem.send_keys(Keys.END)
+            time.sleep(3) # Wait for load
+            
             new_height = driver.execute_script("return document.body.scrollHeight")
+            logging.info(f"Height check: {last_height} -> {new_height}")
+            
             if new_height == last_height:
-                break # No more content loaded
+                if retries < 3: 
+                    retries += 1
+                    logging.info(f"Height didn't change, retrying ({retries}/3)...")
+                    time.sleep(2)
+                    continue
+                else:
+                    logging.info("Reached bottom or scroll stuck.")
+                    break
+            
             last_height = new_height
-            logging.info("Scrolled down...")
+            retries = 0
         # -----------------------------
         
         items = driver.find_elements(By.CSS_SELECTOR, "div[role='listitem']")
@@ -127,7 +146,7 @@ def main():
         # --- NOTIFICATION (Email) ---
         # --- NOTIFICATION (Email) ---
         # Always send notification to confirm system is running
-        logging.info(f"Sending Notification... (Opening: {len(summary['opening_today'])}, New: {len(summary['new_items'])})")
+        logging.info(f"Sending Notification... (Opening: {len(summary['opening_today'])}, New: {summary['new_items_count']})")
         notifier_email.send_update_email(summary)
         
     finally:
