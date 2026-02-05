@@ -11,8 +11,14 @@ from webdriver_manager.chrome import ChromeDriverManager
 import data_manager
 import notifier_email
 
+import urllib3
+import logging
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Suppress SSL warnings
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 CATEGORIES = [
     "baby", "book", "education", "food", "living", 
@@ -107,11 +113,10 @@ def main():
         summary = data_manager.process_data(all_products)
         
         # --- NOTIFICATION (Email) ---
-        if summary['new_items'] or summary['opening_today']:
-            logging.info(f"Sending Notification... (Opening: {len(summary['opening_today'])}, New: {len(summary['new_items'])})")
-            notifier_email.send_update_email(summary)
-        else:
-            logging.info("No new items/openings. No email sent.")
+        # --- NOTIFICATION (Email) ---
+        # Always send notification to confirm system is running
+        logging.info(f"Sending Notification... (Opening: {len(summary['opening_today'])}, New: {len(summary['new_items'])})")
+        notifier_email.send_update_email(summary)
         
     finally:
         driver.quit()

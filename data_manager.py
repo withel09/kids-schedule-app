@@ -57,15 +57,37 @@ def process_data(scraped_data):
     # Load History
     if os.path.exists(HISTORY_FILE):
         df_history = pd.read_csv(HISTORY_FILE)
-        existing_links = set(df_history['link'])
+        # Create a lookup dictionary for existing items: link -> record
+        history_map = {row['link']: row for row in df_history.to_dict('records')}
     else:
         df_history = pd.DataFrame()
-        existing_links = set()
+        history_map = {}
 
-    # Identify New Items
-    new_items_mask = ~df_new['link'].isin(existing_links)
-    df_new_items = df_new[new_items_mask]
-    new_items_list = df_new_items.to_dict('records')
+    new_items_list = []
+    
+    # Identify New or Updated Items
+    for item in scraped_data:
+        link = item['link']
+        current_date_str = item['date']
+        
+        is_new = False
+        
+        if link not in history_map:
+            # Brand new link
+            is_new = True
+            item['status_note'] = "New Item"
+        else:
+            # Existing link, check for updates
+            old_item = history_map[link]
+            old_date_str = str(old_item.get('date', 'N/A'))
+            
+            # If date changed substantially (and isn't just N/A flickering)
+            if current_date_str != "N/A" and current_date_str != old_date_str:
+                is_new = True
+                item['status_note'] = f"Date Update: {old_date_str} -> {current_date_str}"
+        
+        if is_new:
+            new_items_list.append(item)
 
     # Identify "Opening Today" Items
     today = datetime.now().date()
@@ -76,25 +98,28 @@ def process_data(scraped_data):
         if s_date == today:
             opening_today_list.append(item)
 
-    # Allow partial matches for "almost today" if scraping time zone differs slightly, 
-    # but strict equality is safer for "Opening Today".
+    # Update History (Upsert Strategy)
+    # 1. Convert scraped data to DataFrame
+    df_current_scan = pd.DataFrame(scraped_data)
     
-    # Update History
-    # We want to keep the LATEST info for each link, but if it exists, maybe just update price/date?
-    # For simplicity, we append NEW items to history. 
-    # To handle checks for updates on existing items, we would need more complex logic.
-    # For now, just accumulation of NEW links.
-    
-    if not df_new_items.empty:
-        df_updated_history = pd.concat([df_history, df_new_items], ignore_index=True)
-        # Use utf-8-sig for Excel compatibility on Mac/Windows
-        df_updated_history.to_csv(HISTORY_FILE, index=False, encoding='utf-8-sig')
-        logging.info(f"Appended {len(df_new_items)} new items to history.")
+    # 2. Combine with old history, but prioritize new scan for overlapping links
+    if not df_history.empty:
+        # Filter out old rows that are present in the new scan (to be replaced)
+        links_in_current = set(df_current_scan['link'])
+        df_history_kept = df_history[~df_history['link'].isin(links_in_current)]
+        
+        # Combine kept old rows + new scan rows
+        df_updated_history = pd.concat([df_history_kept, df_current_scan], ignore_index=True)
     else:
-        df_updated_history = df_history
-        # Ensure we re-save with correct encoding even if no new items, just in case
-        df_updated_history.to_csv(HISTORY_FILE, index=False, encoding='utf-8-sig')
-        logging.info("No new items to append.")
+        df_updated_history = df_current_scan
+
+    # Save History
+    df_updated_history.to_csv(HISTORY_FILE, index=False, encoding='utf-8-sig')
+    
+    if new_items_list:
+        logging.info(f"Detected {len(new_items_list)} new or updated items.")
+    else:
+        logging.info("No new or updated items found.")
 
     # Save User-Friendly Excel
     try:
