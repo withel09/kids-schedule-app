@@ -264,7 +264,7 @@ export default function Dashboard() {
                 childrenList={children}
                 defaultChildId={selectedKidId || ""}
             />
-            <ChildSetupModal isOpen={isChildSetupOpen} onSuccess={() => setIsChildSetupOpen(false)} />
+            <ChildSetupModal isOpen={isChildSetupOpen} onSave={() => setIsChildSetupOpen(false)} />
         </div>
     );
 }
