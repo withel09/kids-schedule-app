@@ -31,5 +31,6 @@ export interface Schedule {
     is_completed?: boolean;
     is_alarm?: boolean;
     alarm_sound?: string;
+    memo?: string; // 메모
     created_at: string;
 }
