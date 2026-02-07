@@ -14,7 +14,6 @@ export interface Child {
     character_icon?: string;
     avatar_url?: string; // Added validation
     birthdate?: string;
-    birthdate?: string;
     created_at: string;
 }
 
