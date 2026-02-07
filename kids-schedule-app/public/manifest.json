@@ -1,0 +1,21 @@
+{
+    "name": "Kids Schedule Manager",
+    "short_name": "키즈 스케줄",
+    "description": "Smart routine management for moms and kids",
+    "start_url": "/dashboard",
+    "display": "standalone",
+    "background_color": "#FFFBF7",
+    "theme_color": "#ffffff",
+    "icons": [
+        {
+            "src": "https://api.dicebear.com/7.x/fun-emoji/svg?seed=icon",
+            "sizes": "192x192",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "https://api.dicebear.com/7.x/fun-emoji/svg?seed=icon",
+            "sizes": "512x512",
+            "type": "image/svg+xml"
+        }
+    ]
+}
