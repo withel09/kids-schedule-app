@@ -12,8 +12,14 @@ export const metadata: Metadata = {
   title: "Kids Schedule Manager",
   description: "Smart schedule management for moms",
   manifest: "/manifest.json",
+};
+
+export const viewport = {
   themeColor: "#ffffff",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
