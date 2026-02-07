@@ -1,0 +1,21 @@
+0 verbose cli /usr/local/bin/node /usr/local/bin/npm
+1 info using npm@11.6.2
+2 info using node@v24.13.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/joekim/Library/Caches/typescript/5.9/.npmrc
+5 silly config load:file:/Users/joekim/.npmrc
+6 silly config load:file:/usr/local/etc/npmrc
+7 verbose title npm install @types/canvas-confetti@ts5.9 @types/react@ts5.9 @types/react-dom@ts5.9
+8 verbose argv "install" "--ignore-scripts" "@types/canvas-confetti@ts5.9" "@types/react@ts5.9" "@types/react-dom@ts5.9" "--save-dev" "--user-agent" "typesInstaller/5.9.2"
+9 verbose logfile logs-max:10 dir:/Users/joekim/Desktop/비서만들기 프로젝트/kids-schedule-app/.npm-cache/_logs/2026-02-07T17_51_37_976Z-
+10 verbose logfile /Users/joekim/Desktop/비서만들기 프로젝트/kids-schedule-app/.npm-cache/_logs/2026-02-07T17_51_37_976Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly logfile done cleaning log files
+14 silly packumentCache corgi:https://registry.npmjs.org/@types%2fcanvas-confetti cache-miss
+15 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact cache-miss
+16 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact-dom cache-miss
+17 http fetch GET 200 https://registry.npmjs.org/@types%2freact-dom 139ms (cache miss)
+18 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact-dom set size:undefined disposed:false
+19 http fetch GET 200 https://registry.npmjs.org/@types%2freact 157ms (cache miss)
+20 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact set size:undefined disposed:false
