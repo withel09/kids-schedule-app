@@ -19,3 +19,50 @@
 18 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact-dom set size:undefined disposed:false
 19 http fetch GET 200 https://registry.npmjs.org/@types%2freact 157ms (cache miss)
 20 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact set size:undefined disposed:false
+21 http fetch GET 200 https://registry.npmjs.org/@types%2fcanvas-confetti 441ms (cache miss)
+22 silly packumentCache corgi:https://registry.npmjs.org/@types%2fcanvas-confetti set size:undefined disposed:false
+23 silly idealTree buildDeps
+24 silly fetch manifest @types/react-dom@19.2.3
+25 silly packumentCache full:https://registry.npmjs.org/@types%2freact-dom cache-miss
+26 http fetch GET 200 https://registry.npmjs.org/@types%2freact-dom 43ms (cache revalidated)
+27 silly packumentCache full:https://registry.npmjs.org/@types%2freact-dom set size:429026 disposed:false
+28 silly fetch manifest @types/react@19.2.13
+29 silly packumentCache full:https://registry.npmjs.org/@types%2freact cache-miss
+30 http fetch GET 200 https://registry.npmjs.org/@types%2freact 39ms (cache revalidated)
+31 silly packumentCache full:https://registry.npmjs.org/@types%2freact set size:2584421 disposed:false
+32 silly fetch manifest @types/canvas-confetti@1.9.0
+33 silly packumentCache full:https://registry.npmjs.org/@types%2fcanvas-confetti cache-miss
+34 http fetch GET 200 https://registry.npmjs.org/@types%2fcanvas-confetti 1015ms (cache revalidated)
+35 silly packumentCache full:https://registry.npmjs.org/@types%2fcanvas-confetti set size:30579 disposed:false
+36 silly placeDep ROOT @types/canvas-confetti@1.9.0 OK for:  want: 1.9.0
+37 silly placeDep ROOT @types/react@19.2.13 OK for:  want: 19.2.13
+38 silly placeDep ROOT @types/react-dom@19.2.3 OK for:  want: 19.2.3
+39 silly fetch manifest csstype@^3.2.2
+40 silly packumentCache full:https://registry.npmjs.org/csstype cache-miss
+41 http fetch GET 200 https://registry.npmjs.org/csstype 697ms (cache revalidated)
+42 silly packumentCache full:https://registry.npmjs.org/csstype set size:274189 disposed:false
+43 silly placeDep ROOT csstype@3.2.3 OK for: @types/react@19.2.13 want: ^3.2.2
+44 silly reify moves {}
+45 silly audit bulk request {
+45 silly audit   'types-registry': [ '0.1.755' ],
+45 silly audit   '@types/canvas-confetti': [ '1.9.0' ],
+45 silly audit   '@types/react': [ '19.2.13' ],
+45 silly audit   '@types/react-dom': [ '19.2.3' ],
+45 silly audit   csstype: [ '3.2.3' ]
+45 silly audit }
+46 http cache csstype@https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz 0ms (cache hit)
+47 http cache @types/canvas-confetti@https://registry.npmjs.org/@types/canvas-confetti/-/canvas-confetti-1.9.0.tgz 0ms (cache hit)
+48 http cache @types/react@https://registry.npmjs.org/@types/react/-/react-19.2.13.tgz 0ms (cache hit)
+49 http cache @types/react-dom@https://registry.npmjs.org/@types/react-dom/-/react-dom-19.2.3.tgz 0ms (cache hit)
+50 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 159ms
+51 silly audit report {}
+52 silly ADD node_modules/csstype
+53 silly ADD node_modules/@types/react-dom
+54 silly ADD node_modules/@types/react
+55 silly ADD node_modules/@types/canvas-confetti
+56 verbose cwd /Users/joekim/Library/Caches/typescript/5.9
+57 verbose os Darwin 25.2.0
+58 verbose node v24.13.0
+59 verbose npm  v11.6.2
+60 verbose exit 0
+61 info ok
