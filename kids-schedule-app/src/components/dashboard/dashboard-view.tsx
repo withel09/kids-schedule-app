@@ -11,6 +11,8 @@ import { ChildSetupModal } from "@/components/child-setup-modal";
 import { AddScheduleModal } from "@/components/add-schedule-modal";
 import { Schedule, Child } from "@/types";
 import { createBrowserClient } from "@supabase/ssr";
+import { BottomNav } from "@/components/layout/bottom-nav";
+
 
 interface DashboardViewProps {
     initialSchedules: Schedule[];
@@ -159,6 +161,8 @@ export function DashboardView({ initialSchedules, initialChildren = [], userId }
                 isOpen={isChildModalOpen}
                 onSave={handleChildSave}
             />
+
+            <BottomNav />
         </div>
     );
 }

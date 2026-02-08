@@ -1,6 +1,7 @@
 "use client";
 
 import { User, Settings, Bell, Shield, HelpCircle, LogOut, ChevronRight } from "lucide-react";
+import { BottomNav } from "@/components/layout/bottom-nav";
 import Image from "next/image";
 
 export default function SettingsPage() {
@@ -55,6 +56,8 @@ export default function SettingsPage() {
                     </div>
                 </button>
             </div>
+
+            <BottomNav />
         </div>
     );
 }

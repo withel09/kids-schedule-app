@@ -2,6 +2,7 @@
 
 import { BarChart2, TrendingUp, Award, Calendar } from "lucide-react";
 import { SegmentedControl } from "@/components/ui/segmented-control";
+import { BottomNav } from "@/components/layout/bottom-nav";
 import { useState } from "react";
 
 export default function RewardsPage() {
@@ -66,6 +67,8 @@ export default function RewardsPage() {
                     <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
                 </div>
             </div>
+
+            <BottomNav />
         </div>
     );
 }
