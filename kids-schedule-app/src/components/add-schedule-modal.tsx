@@ -23,6 +23,7 @@ interface Child {
 interface AddScheduleModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onSuccess?: () => void;
     childrenList: Child[];
     defaultChildId: string;
 }
@@ -43,7 +44,7 @@ const SIMPLE_TIMES = [
     "07:00", "08:00", "09:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"
 ];
 
-export function AddScheduleModal({ isOpen, onClose, childrenList, defaultChildId }: AddScheduleModalProps) {
+export function AddScheduleModal({ isOpen, onClose, onSuccess, childrenList, defaultChildId }: AddScheduleModalProps) {
     const [title, setTitle] = useState("");
     const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
     const [startTime, setStartTime] = useState("09:00");
@@ -76,6 +77,7 @@ export function AddScheduleModal({ isOpen, onClose, childrenList, defaultChildId
         };
 
         await supabase.from('schedules').insert([payload]);
+        onSuccess?.();
         onClose();
         // Reset
         setStep(1);

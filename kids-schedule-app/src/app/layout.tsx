@@ -10,13 +10,8 @@ const notoSansKr = Noto_Sans_KR({
 
 export const metadata: Metadata = {
   title: "Kids Schedule Manager",
-  description: "Smart schedule management for moms",
+  description: "Smart routine manager for moms and kids",
   manifest: "/manifest.json",
-};
-
-export const viewport = {
-  themeColor: "#ffffff",
-  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,

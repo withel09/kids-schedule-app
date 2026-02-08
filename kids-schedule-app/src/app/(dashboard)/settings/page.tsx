@@ -1,80 +1,60 @@
 "use client";
 
-import { BottomNav } from "@/components/bottom-nav";
-import { User, Bell, LogOut, ChevronRight, Shield } from "lucide-react";
-import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+import { User, Settings, Bell, Shield, HelpCircle, LogOut, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 export default function SettingsPage() {
-    const router = useRouter();
-
-    const handleLogout = async () => {
-        await supabase.auth.signOut();
-        router.push("/login");
-    };
+    const menuItems = [
+        { icon: User, label: "My Profile", color: "text-blue-500 bg-blue-50" },
+        { icon: Bell, label: "Notification", color: "text-orange-500 bg-orange-50" },
+        { icon: Shield, label: "Security", color: "text-green-500 bg-green-50" },
+        { icon: HelpCircle, label: "Help Center", color: "text-purple-500 bg-purple-50" },
+    ];
 
     return (
-        <div className="min-h-screen bg-[#F8F9FA] pb-24 font-sans">
-            <header className="pt-14 px-6 mb-8">
-                <h1 className="text-3xl font-black text-stone-900">설정 ⚙️</h1>
-            </header>
-
-            <main className="px-6 space-y-6">
-                {/* Account Section */}
-                <section>
-                    <h2 className="text-xs font-bold text-stone-400 mb-3 px-1">계정 관리</h2>
-                    <div className="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-stone-50">
-                        <button className="w-full flex items-center justify-between p-5 hover:bg-stone-50 transition-colors border-b border-stone-50">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
-                                    <User className="w-5 h-5 text-stone-500" />
-                                </div>
-                                <span className="font-bold text-stone-700">부모님 프로필 수정</span>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-stone-300" />
-                        </button>
-                        <button className="w-full flex items-center justify-between p-5 hover:bg-stone-50 transition-colors">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
-                                    <Shield className="w-5 h-5 text-stone-500" />
-                                </div>
-                                <span className="font-bold text-stone-700">아이 관리 (자녀 추가)</span>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-stone-300" />
-                        </button>
-                    </div>
-                </section>
-
-                {/* App Settings */}
-                <section>
-                    <h2 className="text-xs font-bold text-stone-400 mb-3 px-1">앱 설정</h2>
-                    <div className="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-stone-50">
-                        <button className="w-full flex items-center justify-between p-5 hover:bg-stone-50 transition-colors">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
-                                    <Bell className="w-5 h-5 text-stone-500" />
-                                </div>
-                                <span className="font-bold text-stone-700">알림 설정</span>
-                            </div>
-                            <div className="bg-stone-900 text-white text-[10px] font-bold px-2 py-1 rounded-full">ON</div>
-                        </button>
-                    </div>
-                </section>
-
-                <button
-                    onClick={handleLogout}
-                    className="w-full bg-white rounded-[2rem] p-5 flex items-center justify-center gap-2 text-red-500 font-bold shadow-sm border border-stone-50 hover:bg-red-50 transition-colors"
-                >
-                    <LogOut className="w-5 h-5" />
-                    로그아웃
+        <div className="flex flex-col min-h-screen bg-[#F8F9FA] p-6 pb-24">
+            <div className="pt-4 flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-extrabold text-[#2D3648]">Profile</h1>
+                <button className="p-3 rounded-full bg-white shadow-sm text-gray-500">
+                    <Settings className="w-5 h-5" />
                 </button>
+            </div>
 
-                <p className="text-center text-[10px] text-stone-300 pt-4">
-                    Kids Schedule Manager v1.0.0
-                </p>
-            </main>
+            {/* Profile Card */}
+            <div className="bg-white rounded-[32px] p-6 mb-8 shadow-sm flex flex-col items-center">
+                <div className="w-24 h-24 rounded-full bg-gray-200 mb-4 overflow-hidden relative">
+                    {/* Avatar Placeholder */}
+                    <div className="absolute inset-0 flex items-center justify-center text-4xl">👩</div>
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">제제 맘</h2>
+                <p className="text-gray-400 text-sm font-medium">supermom@example.com</p>
+            </div>
 
-            <BottomNav activeTab="settings" onTabChange={() => { }} />
+            {/* Menu List */}
+            <div className="bg-white rounded-[32px] p-4 shadow-sm space-y-2">
+                {menuItems.map((item) => (
+                    <button key={item.label} className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-gray-50 transition-colors group">
+                        <div className="flex items-center gap-4">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${item.color}`}>
+                                <item.icon className="w-5 h-5" />
+                            </div>
+                            <span className="font-bold text-gray-700">{item.label}</span>
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-gray-500" />
+                    </button>
+                ))}
+
+                <div className="h-px bg-gray-50 my-2 mx-4" />
+
+                <button className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-red-50 transition-colors group">
+                    <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center text-red-500 bg-red-50">
+                            <LogOut className="w-5 h-5" />
+                        </div>
+                        <span className="font-bold text-red-500">Log Out</span>
+                    </div>
+                </button>
+            </div>
         </div>
     );
 }
