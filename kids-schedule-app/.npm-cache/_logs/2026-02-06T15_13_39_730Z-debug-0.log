@@ -1,0 +1,13 @@
+0 verbose cli /usr/local/bin/node /usr/local/bin/npm
+1 info using npm@11.6.2
+2 info using node@v24.13.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/joekim/Desktop/비서만들기 프로젝트/kids-schedule-app/.npmrc
+5 silly config load:file:/Users/joekim/.npmrc
+6 silly config load:file:/usr/local/etc/npmrc
+7 verbose title npm run dev -p 3001
+8 verbose argv "run" "dev" "--" "-p" "3001"
+9 verbose logfile logs-max:10 dir:/Users/joekim/Desktop/비서만들기 프로젝트/kids-schedule-app/.npm-cache/_logs/2026-02-06T15_13_39_730Z-
+10 verbose logfile /Users/joekim/Desktop/비서만들기 프로젝트/kids-schedule-app/.npm-cache/_logs/2026-02-06T15_13_39_730Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly logfile done cleaning log files
