@@ -1,5 +1,0 @@
-selenium
-webdriver-manager
-pandas
-openpyxl
-python-telegram-bot
